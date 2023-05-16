@@ -26,7 +26,6 @@ async function checkText(req, res) {
 
 	try {
 		validateCheckText({ text, type });
-
 		const result = await BusinessLogic.checkText({ text, type });
 		res.status(200).send(result);
 	} catch (error) {

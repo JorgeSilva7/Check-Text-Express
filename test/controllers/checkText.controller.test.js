@@ -14,43 +14,31 @@ describe("Controller: Check text unit test", () => {
 		send: jest.fn(),
 	};
 
-	it("[ERROR] When the type doesnt exists in the body throw error", () => {
+	it("[ERROR] When the type doesnt exists in the body throw error", async () => {
 		const req = {
 			body: {
 				text: "text",
 			},
 		};
 
-		checkText(req, res);
+		await checkText(req, res);
 		expect(res.status).toBeCalledWith(400);
 		expect(res.send).toBeCalledWith({ error: businessError });
 	});
 
-	it("[ERROR] When the text doesnt exists in the body throw error", () => {
+	it("[ERROR] When the text doesnt exists in the body throw error", async () => {
 		const req = {
 			body: {
 				type: "type",
 			},
 		};
 
-		checkText(req, res);
+		await checkText(req, res);
 		expect(res.status).toBeCalledWith(400);
 		expect(res.send).toBeCalledWith({ error: businessError });
 	});
 
-	it("[ERROR] When the text doesnt exists in the body throw error with status code 500", () => {
-		const req = {
-			body: {
-				type: "type",
-			},
-		};
-
-		checkText(req, res);
-		expect(res.status).toBeCalledWith(400);
-		expect(res.send).toBeCalledWith({ error: businessError });
-	});
-
-	it("[SUCCESS] Should return true when BusinessLogic.checkText return true", () => {
+	it("[SUCCESS] Should return true when BusinessLogic.checkText return true", async () => {
 		const req = {
 			body: {
 				type: "type",
@@ -58,14 +46,14 @@ describe("Controller: Check text unit test", () => {
 			},
 		};
 
-		BusinessLogic.checkText.mockReturnValue(true);
+		BusinessLogic.checkText = jest.fn().mockReturnValue(true);
 
-		checkText(req, res);
+		await checkText(req, res);
 		expect(res.send).toBeCalledWith(true);
 		expect(res.status).toBeCalledWith(200);
 	});
 
-	it("[SUCCESS] Should return false when BusinessLogic.checkText return false", () => {
+	it("[SUCCESS] Should return false when BusinessLogic.checkText return false", async () => {
 		const req = {
 			body: {
 				type: "type",
@@ -75,32 +63,42 @@ describe("Controller: Check text unit test", () => {
 
 		BusinessLogic.checkText.mockReturnValue(false);
 
-		checkText(req, res);
+		await checkText(req, res);
 		expect(res.send).toBeCalledWith(false);
 		expect(res.status).toBeCalledWith(200);
 	});
 
-	it("[ERROR] Should return a ServerError when checkText logic throw a ServerError", () => {
+	it("[ERROR] Should return a ServerError when checkText logic throw a ServerError", async () => {
+		const req = {
+			body: {
+				type: "type",
+				text: "text",
+			},
+		};
+
 		BusinessLogic.checkText.mockImplementation(() => {
 			throw serverError;
 		});
 
-		const req = { body: { text: "text", type: "type" } };
-
-		checkText(req, res);
+		await checkText(req, res);
 
 		expect(res.status).toBeCalledWith(500);
 		expect(res.send).toBeCalledWith({ error: serverError });
 	});
 
-	it("[ERROR] Should return a BusinessError when checkText logic throw a BusinessError", () => {
+	it("[ERROR] Should return a BusinessError when checkText logic throw a BusinessError", async () => {
+		const req = {
+			body: {
+				type: "type",
+				text: "text",
+			},
+		};
+
 		BusinessLogic.checkText.mockImplementation(() => {
 			throw businessError;
 		});
 
-		const req = { body: { text: "text", type: "type" } };
-
-		checkText(req, res);
+		await checkText(req, res);
 
 		expect(res.status).toBeCalledWith(400);
 		expect(res.send).toBeCalledWith({ error: businessError });
