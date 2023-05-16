@@ -4,7 +4,11 @@ import { BusinessError } from "../../src/helpers/error.helper.js";
 import CheckTextModel from "../../src/models/checkTextLog.model.js";
 
 describe("Business Logic: Check text unit test", () => {
-	//CheckTextModel.saveLog = jest.fn();
+	const checkTextModelStub = jest.spyOn(CheckTextModel, "saveLog");
+
+	beforeEach(() => {
+		checkTextModelStub.mockImplementation(() => {});
+	});
 
 	it("[ERROR] When the type doesnt exists in the selector should throw error", async () => {
 		const input = {
@@ -18,6 +22,7 @@ describe("Business Logic: Check text unit test", () => {
 			expect(error.msg).toEqual("type is not available");
 			expect(error).toBeInstanceOf(BusinessError);
 			expect(error.name).toEqual("type error");
+			expect(checkTextModelStub).not.toBeCalled();
 		}
 	});
 
@@ -26,9 +31,11 @@ describe("Business Logic: Check text unit test", () => {
 			text: "www.google.cl",
 			type: "url",
 		};
+
 		const result = await checkText(input);
 
 		expect(result).toEqual(true);
+		expect(checkTextModelStub).toBeCalled();
 	});
 
 	it("[SUCCESS] Should return false when the text is a invalid url", async () => {
@@ -39,6 +46,7 @@ describe("Business Logic: Check text unit test", () => {
 		const result = await checkText(input);
 
 		expect(result).toBeFalsy();
+		expect(checkTextModelStub).toBeCalled();
 	});
 
 	it("[SUCCESS] Should return true when the text is a valid number", async () => {
@@ -49,6 +57,7 @@ describe("Business Logic: Check text unit test", () => {
 		const result = await checkText(input);
 
 		expect(result).toBeTruthy();
+		expect(checkTextModelStub).toBeCalled();
 	});
 
 	it("[SUCCESS] Should return false when the text is a invalid number", async () => {
@@ -59,5 +68,6 @@ describe("Business Logic: Check text unit test", () => {
 		const result = await checkText(input);
 
 		expect(result).toBeFalsy();
+		expect(checkTextModelStub).toBeCalled();
 	});
 });

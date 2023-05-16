@@ -7,7 +7,7 @@ describe("Controller: Check text unit test", () => {
 	const businessError = new BusinessError("Business error", "business error");
 	const serverError = new ServerError("Server error", "server error");
 
-	BusinessLogic.checkText = jest.fn();
+	const checkTextBusinessLogicStub = jest.spyOn(BusinessLogic, "checkText");
 
 	const res = {
 		status: jest.fn().mockReturnThis(),
@@ -46,11 +46,12 @@ describe("Controller: Check text unit test", () => {
 			},
 		};
 
-		BusinessLogic.checkText = jest.fn().mockReturnValue(true);
+		checkTextBusinessLogicStub.mockReturnValue(true);
 
 		await checkText(req, res);
 		expect(res.send).toBeCalledWith(true);
 		expect(res.status).toBeCalledWith(200);
+		expect(checkTextBusinessLogicStub).toBeCalled();
 	});
 
 	it("[SUCCESS] Should return false when BusinessLogic.checkText return false", async () => {
@@ -61,11 +62,12 @@ describe("Controller: Check text unit test", () => {
 			},
 		};
 
-		BusinessLogic.checkText.mockReturnValue(false);
+		checkTextBusinessLogicStub.mockReturnValue(false);
 
 		await checkText(req, res);
 		expect(res.send).toBeCalledWith(false);
 		expect(res.status).toBeCalledWith(200);
+		expect(checkTextBusinessLogicStub).toBeCalled();
 	});
 
 	it("[ERROR] Should return a ServerError when checkText logic throw a ServerError", async () => {
@@ -76,7 +78,7 @@ describe("Controller: Check text unit test", () => {
 			},
 		};
 
-		BusinessLogic.checkText.mockImplementation(() => {
+		checkTextBusinessLogicStub.mockImplementation(() => {
 			throw serverError;
 		});
 
@@ -84,6 +86,7 @@ describe("Controller: Check text unit test", () => {
 
 		expect(res.status).toBeCalledWith(500);
 		expect(res.send).toBeCalledWith({ error: serverError });
+		expect(checkTextBusinessLogicStub).toBeCalled();
 	});
 
 	it("[ERROR] Should return a BusinessError when checkText logic throw a BusinessError", async () => {
@@ -94,7 +97,7 @@ describe("Controller: Check text unit test", () => {
 			},
 		};
 
-		BusinessLogic.checkText.mockImplementation(() => {
+		checkTextBusinessLogicStub.mockImplementation(() => {
 			throw businessError;
 		});
 
@@ -102,5 +105,6 @@ describe("Controller: Check text unit test", () => {
 
 		expect(res.status).toBeCalledWith(400);
 		expect(res.send).toBeCalledWith({ error: businessError });
+		expect(checkTextBusinessLogicStub).toBeCalled();
 	});
 });

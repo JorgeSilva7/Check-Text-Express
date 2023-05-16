@@ -4,7 +4,7 @@ config();
 import express from "express";
 import checkTextRouter from "./routers/checkText.router.js";
 import environment from "./config/environment.js";
-import mongoConnect from "./config/mongo.js";
+import { mongoConnect } from "./config/mongo.js";
 
 const { PORT } = environment;
 
