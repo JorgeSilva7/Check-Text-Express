@@ -50,6 +50,14 @@ function checkNumber(text) {
 	return !isNaN(text) && !isNaN(parseFloat(text));
 }
 
+// function checkEmail(text) {
+// 	return String(text)
+// 		.toLowerCase()
+// 		.match(
+// 			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+// 		);
+// }
+
 /**
  * Function selector (like switch but more pretty ✨)
  */
