@@ -1,4 +1,5 @@
 import { BusinessError } from "../helpers/error.helper.js";
+import CheckTextModel from "../models/checkTextLog.model.js";
 
 /**
  * Check the text depending on the type
@@ -6,7 +7,7 @@ import { BusinessError } from "../helpers/error.helper.js";
  * @param {string} args.type - Type of text to validate
  * @returns {boolean}
  */
-function checkText({ text, type }) {
+async function checkText({ text, type }) {
 	const upperType = type.toUpperCase();
 
 	const typeFuncion = selector[upperType];
@@ -15,7 +16,11 @@ function checkText({ text, type }) {
 		throw new BusinessError("type error", "type is not available");
 	}
 
-	return selector[upperType](text);
+	const result = selector[upperType](text);
+
+	await CheckTextModel.saveLog({ text, type });
+
+	return result;
 }
 
 /**

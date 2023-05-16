@@ -1,4 +1,4 @@
-import checkText from "../../src/controllers/checkText.controller";
+import { checkText } from "../../src/controllers/checkText.controller";
 import { expect, jest } from "@jest/globals";
 import BusinessLogic from "../../src/business-logic/index.js";
 import { ServerError, BusinessError } from "../../src/helpers/error.helper";
