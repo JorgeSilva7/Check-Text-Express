@@ -8,7 +8,7 @@ _Need a mongo database connection_
 
 ```
 Set the environment variables in .env file:
-- NODE_ENV: Environment (test: mock ON)
+- NODE_ENV: Environment (development: mock ON)
 - PORT: running port number
 - MONGO_URI: Mongo URI full format `mongodb://user:pass@host:port/databaseName`
 ```
@@ -21,15 +21,11 @@ npm run dev
 ## Tests
 
 ```
-npm run test -> test without mocks
-npm run test:mock -> test with mocks
-npm run test:mock:unix -> test with mocks for unix (MAC, linux)
+npm run test
 ```
 
 ## Coverage
 
 ```
-npm run coverage -> coverage without mocks
-npm run coveraget:mock -> coverage with mocks
-npm run coverage:mock:unix -> coverage with mocks for unix (MAC, linux)
+npm run coverage
 ```
