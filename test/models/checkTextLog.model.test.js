@@ -21,7 +21,7 @@ describe("Models: Check text model unit test", () => {
 		checkTextModelStub.mockReturnValue();
 		CheckTextModel.saveLog({ type: "a", text: "a" });
 
-		expect(checkTextModelStub).toBeCalled();
+		expect(checkTextModelStub).toBeCalled;
 	});
 
 	it("[SUCCESS] Create check text successful", async () => {

@@ -1,5 +1,6 @@
 import { BusinessError } from "../helpers/error.helper.js";
 import CheckTextModel from "../models/checkTextLog.model.js";
+import { findPokemonByName } from "../services/pokemon.service.js";
 
 /**
  * Check the text depending on the type
@@ -16,7 +17,7 @@ async function checkText({ text, type }) {
 		throw new BusinessError("type error", "type is not available");
 	}
 
-	const result = selector[upperType](text);
+	const result = await selector[upperType](text);
 
 	await CheckTextModel.saveLog({ text, type });
 
@@ -50,13 +51,15 @@ function checkNumber(text) {
 	return !isNaN(text) && !isNaN(parseFloat(text));
 }
 
-// function checkEmail(text) {
-// 	return String(text)
-// 		.toLowerCase()
-// 		.match(
-// 			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-// 		);
-// }
+/**
+ * Check if the input text is a valid pokemon name
+ * @param {string} text - Input text to check
+ * @returns {boolean}
+ */
+async function checkPokemon(text) {
+	const result = await findPokemonByName(text.toLowerCase());
+	return result;
+}
 
 /**
  * Function selector (like switch but more pretty ✨)
@@ -64,6 +67,7 @@ function checkNumber(text) {
 const selector = {
 	URL: checkURL,
 	NUMBER: checkNumber,
+	POKEMON: checkPokemon,
 };
 
 export default checkText;
