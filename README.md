@@ -8,6 +8,7 @@ _Need a mongo database connection_
 
 ```
 Set the environment variables in .env file:
+- NODE_ENV: Environment (development: mock ON)
 - PORT: running port number
 - MONGO_URI: Mongo URI full format `mongodb://user:pass@host:port/databaseName`
 ```

@@ -44,7 +44,6 @@ async function listLogs(req, res) {
 		const result = await BusinessLogic.listLogs();
 		res.status(200).send({ logs: result });
 	} catch (error) {
-		console.log(error);
 		const statusCode = error.statusCode ?? 500;
 		res.status(statusCode).send({ error });
 	}
